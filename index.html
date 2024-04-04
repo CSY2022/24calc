@@ -1,0 +1,133 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>24点计算器</title>
+    <style>
+        body {
+            color-scheme: light dark;
+            background-color: Canvas;
+            color: CanvasText;
+            white-space: pre-line;
+        }
+        .navbar { position: fixed; bottom: 0; right: 0; padding: 10px; }
+    </style>
+<link rel="stylesheet" href="mdui.css">
+<script src="mdui.global.js"></script>
+
+</head>
+
+<body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+function calc(num1, num2, sym1) {
+    let result = 0;
+    if (sym1 === 0) {
+        result = num1 + num2;
+    } else if (sym1 === 1) {
+        result = num1 - num2;
+    } else if (sym1 === 2) {
+        result = num1 * num2;
+    } else if (sym1 === 3 && num2 !== 0) {
+        result = num1 / num2;
+    } else if (sym1 === 4) {
+        result = num2 - num1;
+    } else if (sym1 === 5 && num1 !== 0) {
+        result = num2 / num1;
+    }
+    return result;
+}
+function print(text) {
+    var element = document.getElementById('output');
+    var newParagraph = document.createElement('p');
+    var textNode = document.createTextNode(text);
+    newParagraph.appendChild(textNode);
+    element.appendChild(newParagraph);
+}
+function main() {
+    let i = 0;
+    let num = [0, 0, 0, 0];
+    let input = prompt('请输入4个数字，用空格分隔:').split(' ');
+    num = input.map(num => parseInt(num));
+    let sym = [' + ', ' - ', '×', '÷', ' - ', '÷'];
+    let num_sum = 10;
+    let num_time = 24;
+    for (let i1 = 0; i1 < 4; i1++) {
+        let num1 = num[i1];
+        for (let i2 = 0; i2 < 3; i2++) {
+            let num2t = (i1 + i2 + 1) % 4;
+            let num2 = num[num2t];
+            let y = num_sum - i1 - 2 - num2t;
+            let x = (num_time / (i1 + 1)) / (num2t + 1);
+            let delta = Math.sqrt(y * y - 4 * x);
+            for (let k1 = 0; k1 < 6; k1++) {
+                let result1 = calc(num1, num2, k1);
+                for (let i3 = 0; i3 < 2; i3++) {
+                    let num3 = num[Math.floor((delta * Math.pow(-1, i3 + 1) + y) / 2) - 1];
+                    let num4 = num[Math.floor((delta * Math.pow(-1, i3) + y) / 2) - 1];
+                    for (let k2 = 0; k2 < 6; k2++) {
+                        let result2 = calc(result1, num3, k2);
+                        let result4 = calc(num3, num4, k2);
+                        for (let k3 = 0; k3 < 6; k3++) {
+                            let result3 = calc(result2, num4, k3);
+                            let result5 = calc(result1, result4, k3);
+                            if (result3 < 24.0001 && result3 > 23.9999) {
+                                i++;
+                                print('第'+(i).toString()+'组解:');
+                                if (k1 === 5 || k1 === 4) {
+                                    print((num2).toString()+ (sym[k1]).toString()+ (num1).toString()+ '='+ (result1.toFixed(2)).toString());
+                                } else {
+                                    print((num1).toString()+ (sym[k1]).toString()+ (num2).toString()+ '='+ (result1.toFixed(2)).toString());
+                                }
+                                if (k2 === 5 || k2 === 4) {
+                                    print((num3).toString()+(sym[k2]).toString()+(result1.toFixed(2)).toString()+'='+(result2.toFixed(2)).toString());
+                                } else {
+                                    print((result1.toFixed(2)).toString()+ (sym[k2]).toString()+ (num3).toString()+ '='+(result2.toFixed(2)).toString());
+                                }
+                                if (k3 === 5 || k3 === 4) {
+                                    print((num4).toString()+(sym[k3]).toString()+(result2.toFixed(2)).toString()+ '='+ '24');
+                                } else {
+                                    print((result2.toFixed(2)).toString()+ (sym[k3]).toString()+ (num4).toString()+ '=' + '24');
+                                }
+                                print('');
+                            }
+                            if (result5 < 24.0001 && result5 > 23.9999) {
+                                i++;
+                                print('第'+ (i).toString()+ '组解:');
+                                if (k1 === 5 || k1 === 4) {
+                                    print((num2).toString()+ (sym[k1]).toString()+ (num1).toString()+ '=' + (result1.toFixed(2)).toString());
+                                } else {
+                                    print((num1).toString()+ (sym[k1]).toString()+ (num2).toString()+ '=' + (result1.toFixed(2)).toString());
+                                }
+                                if (k2 === 5 || k2 === 4) {
+                                    print((num4).toString()+ (sym[k2]).toString()+ (num3).toString()+ '='+ (result4.toFixed(2)).toString());
+                                } else {
+                                    print((num3).toString()+ (sym[k2]).toString()+ (num4).toString()+ '=' + (result4.toFixed(2)).toString());
+                                }
+                                if (k3 === 5 || k3 === 4) {
+                                    print((result4.toFixed(2)).toString()+ (sym[k3]).toString()+ (result1.toFixed(2)).toString()+ '=' + '24');
+                                } else {
+                                    print((result1.toFixed(2)).toString()+ (sym[k3]).toString()+ (result4.toFixed(2)).toString()+ '=' + '24');
+                                }
+                                print('');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (i === 0) {
+        print("该组合无解");
+    }
+}
+main();
+});
+</script>
+<div id='output'></div>
+<div class="navbar">
+<mdui-fab extended href="index.html">重新填写</mdui-fab>
+<div>
+</body>
+</html>
