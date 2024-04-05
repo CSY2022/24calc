@@ -12,6 +12,8 @@ def calc(num1,num2,sym1):
         result = num2 - num1
     elif sym1 == 5 and num1 != 0:
         result = num2 / num1
+    else:
+        result = 10000
     return result
 def main():
     i = 0
