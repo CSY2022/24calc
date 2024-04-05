@@ -11,17 +11,27 @@
             color: CanvasText;
             white-space: pre-line;
         }
-        .navbar { position: fixed; bottom: 0; right: 0; padding: 10px; }
+        .navbar { position: fixed; bottom: 45; right: 10; padding: 10px; }
     </style>
 <link rel="stylesheet" href="mdui.css">
 <script src="mdui.global.js"></script>
-
 </head>
-
 <body>
 <mdui-button variant="elevated" href="https://24.csy2022.top/24.apk"full-width>下载安卓客户端，手机体验更丝滑</mdui-button>
+<mdui-text-field variant="outlined" inputmode="numeric" autofocus=true id="nume1" label="请输入第一个数字" placeholder="" type="number"></mdui-text-field>
+<br>
+<mdui-text-field variant="outlined" inputmode="numeric" id="nume2" label="请输入第二个数字" placeholder="" type="number"></mdui-text-field>
+<br>
+<mdui-text-field variant="outlined" inputmode="numeric" id="nume3" label="请输入第三个数字" placeholder="" type="number"></mdui-text-field>
+<br>
+<mdui-text-field variant="outlined" inputmode="numeric" id="nume4" label="请输入第四个数字" placeholder="" type="number"></mdui-text-field>
+<br>
+<mdui-button variant="filled" id="submit">提交</mdui-button>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+document.getElementById('submit').addEventListener('click', function() { 
+element = document.getElementById('output');
+element.replaceChildren();
 function calc(num1, num2, sym1) {
     let result = 0;
     if (sym1 === 0) {
@@ -36,6 +46,8 @@ function calc(num1, num2, sym1) {
         result = num2 - num1;
     } else if (sym1 === 5 && num1 !== 0) {
         result = num2 / num1;
+    } else if (1) {
+    result = 10000
     }
     return result;
 }
@@ -49,9 +61,11 @@ function print(text) {
 function main() {
     let i = 0;
     let num = [0, 0, 0, 0];
-    let input = prompt('请输入4个数字，用空格分隔:').split(' ');
-    num = input.map(num => parseInt(num));
-    let sym = [' + ', ' - ', '×', '÷', ' - ', '÷'];
+    num[0] = Number(document.getElementById('nume1').value); 
+    num[1] = Number(document.getElementById('nume2').value);
+    num[2] = Number(document.getElementById('nume3').value); 
+    num[3] = Number(document.getElementById('nume4').value); 
+    let sym= [' + ', ' - ', '×', '÷', ' - ', '÷'];
     let num_sum = 10;
     let num_time = 24;
     for (let i1 = 0; i1 < 4; i1++) {
@@ -124,11 +138,11 @@ function main() {
     }
 }
 main();
-});
+});});
 </script>
-<div id='output'></div>
+<div id='output'> </div>
 <div class="navbar">
-<mdui-fab extended href="index.html">重新填写</mdui-fab>
-<div>
+<mdui-fab extended href="index.html">清空</mdui-fab>
+</div>
 </body>
 </html>
